@@ -1,6 +1,6 @@
 <template>
     <div id="add-report" class="container">
-        <h3 class="display-4">Add Report</h3>
+        <h3 class="text-muted">Add Report</h3>
         <form>
             <div class="form-group">
                 <label for="title">Report Title:</label>
@@ -20,7 +20,7 @@
             </div>
         </form>
         <div id="preview">
-            <h3 class="display-4">Preview Report</h3>
+            <h3 class="text-muted">Preview Report</h3>
             <p class="lead">Title: {{report.title}} </p>
             <ul>
                 <li v-for="(item, index) in report.accomplishments">{{item.item}} <button class="btn btn-danger btn-sm" v-on:click="removeItem(index)">X</button></li>
