@@ -42,8 +42,18 @@
             </p>
             <p class="h6">Accomplishments</p>
             <ul>
-                <li v-for="(item, index) in report.accomplishments" class="text-muted">{{item.item}}
-                    <button class="btn btn-danger btn-sm" v-on:click="removeItem(index, 'accomplishment')">X</button>
+                <li v-for="(item, index) in report.accomplishments" class="text-muted">
+                    <div v-show="!item.edit">
+                        {{item.item}}
+                        <button class="btn btn-danger btn-sm" v-on:click="removeItem(index, 'accomplishment')">X</button>
+                        <button class="btn btn-primary btn-sm" v-on:click="editItem(index, 'accomplishment')">Edit</button>
+                    </div>
+                    <div v-show="item.edit">                        
+                            <input type="text"  v-model="item.item">
+                            <button class="btn btn-primary btn-sm" v-on:click="saveItem(index, item.item)">Save</button>
+                            <button class="fa fa-camera-retro" v-on:click="item.edit = false">Cancel</button>     
+                            <i class="fa fa-camera-retro fa-lg">s</i>                   
+                    </div>
                 </li>
             </ul>
             <p class="h6">Risks</p>
@@ -52,7 +62,7 @@
                     <button class="btn btn-danger btn-sm" v-on:click="removeItem(index, 'risk')">X</button>
                 </li>
             </ul>
-             <p class="h6">Issues</p>
+            <p class="h6">Issues</p>
             <ul>
                 <li v-for="(item, index) in report.issues" class="text-muted">{{item.item}}
                     <button class="btn btn-danger btn-sm" v-on:click="removeItem(index, 'issue')">X</button>
@@ -69,10 +79,10 @@ export default {
             report: {
                 title: "",
                 accomplishments: [
-                    { item: "Lorem ninja ipsum dolor sit amet" },
-                    { item: "consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt" },
-                    { item: "Ut ninja wisi enim ad minim veniam, quis nostrud" },
-                    { item: "Duis ninja autem vel eum iriure dolor in hendrerit" }
+                    { item: "Lorem ninja ipsum dolor sit amet", edit: false },
+                    { item: "consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt", edit: false },
+                    { item: "Ut ninja wisi enim ad minim veniam, quis nostrud", edit: false },
+                    { item: "Duis ninja autem vel eum iriure dolor in hendrerit", edit: false }
                 ],
                 accomplishment: "",
                 risks: [
@@ -89,9 +99,9 @@ export default {
                     { item: "issue threee" },
                     { item: "issue four" }
                 ],
-                issue: ""
+                issue: "",
+                edit: false
             }
-
         }
     },
     methods: {
@@ -102,17 +112,24 @@ export default {
                 this.report.risks.splice(index, 1);
             } else if (type === 'issue') {
                 this.report.issues.splice(index, 1);
-            }            
+            }
         },
         addItem: function(type) {
             if (type === 'accomplishment') {
-                this.report.accomplishments.push({ item: this.report.accomplishment });
+                this.report.accomplishments.push({ item: this.report.accomplishment, edit: false });
             } else if (type === 'risk') {
                 this.report.risks.push({ item: this.report.risk });
             } else if (type === 'issue') {
-                this.report.issues.push({item: this.report.issue});
+                this.report.issues.push({ item: this.report.issue });
             }
-
+        },
+        editItem: function(index) {
+            this.report.accomplishments[index].edit = true;
+        },
+        saveItem: function(index, value) {
+            console.log(value);
+            this.report.accomplishments[index].item = value
+            this.report.accomplishments[index].edit = false;
         }
     }
 }
